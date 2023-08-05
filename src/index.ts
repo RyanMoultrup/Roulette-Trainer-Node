@@ -2,6 +2,7 @@ import express, { Application } from 'express'
 import dotenv from 'dotenv'
 import { registerRoutes } from './routes'
 import { setEnvironment } from './config/env'
+import { mongo } from './config/mongo'
 
 const init = (): Application => {
     const app = express();
@@ -10,6 +11,8 @@ const init = (): Application => {
 
     setEnvironment(app)
     registerRoutes(app)
+
+    mongo.connect()
 
     return app
 }
