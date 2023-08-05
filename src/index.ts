@@ -6,8 +6,9 @@ import { mongo } from './config/mongo'
 
 const init = (): Application => {
     const app = express();
-    const port = process.env.PORT || 3000;
     dotenv.config()
+
+    const port = process.env.PORT || 3000;
 
     setEnvironment(app)
     registerRoutes(app)

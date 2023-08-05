@@ -17,7 +17,7 @@ services:
     command: >
       bash -c "
           npm install &&
-           npx nodemon --es-module-specifier-resolution=node --exec 'node --loader ts-node/esm' server.ts
+          npx nodemon --exec ts-node server.ts
       "
 
   mongo:

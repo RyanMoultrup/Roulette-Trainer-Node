@@ -1,21 +1,28 @@
-import mongoose, { Mongoose } from 'mongoose'
+import mongoose from 'mongoose'
 
-const db: {local: string} = {
-    local: 'mongodb://localhost:27017/roulette_trainer'
+const dbConnect: {local: string} = {
+    local: 'mongodb://mongo:27017/roulette_trainer'
 }
 
-export const mongo:{connect: () => Promise<any>} = {
-    async connect (): Promise<any> {
-        try {
-            const config: {} = {
-                useNewUrlParser: true,
-                useUnifiedTopology: true
-            }
-            const uri: string = db.local
-
-            return await mongoose.connect(uri, config)
-        } catch (e) {
-            console.error(`MongoDB connection error:`)
+export const mongo:{connect: () => void} = {
+    connect (): void {
+        const config: {} = {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
         }
+
+        mongoose.connect(dbConnect.local, config)
+
+        const db = mongoose.connection
+
+        db.on('error', err => console.error(err))
+        db.once('open', () => console.log('Connected to database'))
     }
 }
+
+// let schema = {
+//     "_id": ObjectId("..."),
+//     "_userId": << user document link>>
+//     "name": "My First Game",
+//     "outcomes": []
+// }
