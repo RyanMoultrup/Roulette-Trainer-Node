@@ -1,0 +1,30 @@
+version: "3" # The Docker version
+
+volumes:
+  mongo_volume:
+
+services:
+  app:
+    image: node:20.3
+    volumes:
+      - ./:/usr/src/app
+      - /usr/src/app/node_modules
+    working_dir: /usr/src/app
+    depends_on:
+      - mongo
+    ports:
+      - 3000:8080
+    command: >
+      bash -c "
+          npm install &&
+          nodemon --experimental-specifier-resolution=node --experimental-modules --es-module-specifier-resolution=node --exec 'node --loader ts-node/esm' server.ts
+      "
+
+  mongo:
+    image: mongo:6
+    expose:
+      - 27017
+    ports:
+      - 27017:27017
+    volumes:
+      - "mongo_volume:/usr/src/data/db"
