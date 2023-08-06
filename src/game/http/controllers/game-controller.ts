@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import * as game from '../../models/game-repository'
 
 /**
  * Saves a game to the database.
@@ -9,17 +10,16 @@ import { Request, Response } from 'express';
  * @param {Request} req - The Express Request object.
  * @param {Response} res - The Express Response object.
  * @returns {void}
- *
- * @example
- * router.post('/resource', create);
  */
 export function create(req: Request, res: Response): void {
-    console.log('request body::', req.body)
     try {
+        const response = game.create(req.body)
         res.send({
-            success: true
+            success: true,
+            data: response
         })
     } catch (e) {
         console.error(e)
+        res.status(500).send({errors: true, message: "An error occurred while creating the user."});
     }
 }

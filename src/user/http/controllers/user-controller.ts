@@ -1,9 +1,5 @@
 import { Request, Response } from 'express';
-import { 
-    create as userCreate, 
-    all as userAll, 
-    get as userGet
-} from '../../../user/model/user-repository';
+import * as user from '../../../user/model/user-repository';
 
 /**
  * Creates a new user in the database.
@@ -14,16 +10,13 @@ import {
  * @param {Request} req - The Express Request object.
  * @param {Response} res - The Express Response object.
  * @returns {void}
- *
- * @example
- * router.post('/resource', create);
  */
 export async function create(req: Request, res: Response): Promise<void> {
     try {
-        const user = await userCreate(req.body)
-        res.send({
+        const response = await user.create(req.body)
+        res.json({
             errors: false,
-            data: user
+            data: response
         })
     } catch (e) {
         console.error(e)
@@ -40,16 +33,13 @@ export async function create(req: Request, res: Response): Promise<void> {
  * @param {Request} req - The Express Request object. The user ID is expected to be in the request parameters under 'userId'.
  * @param {Response} res - The Express Response object.
  * @returns {Promise<void>} - The Promise resolves when the response has been sent.
- *
- * @example
- * router.get('/user/:userId', get);
  */
 export async function get(req: Request, res: Response): Promise<void> {
     try {
-        const user = await userGet(req.params.userId)
-        res.send({
+        const response = await user.get(req.params.userId)
+        res.json({
             errors: false,
-            data: user
+            data: response
         })
     } catch (e) {
         console.error(e)
@@ -66,16 +56,13 @@ export async function get(req: Request, res: Response): Promise<void> {
  * @param {Request} req - The Express Request object.
  * @param {Response} res - The Express Response object.
  * @returns {Promise<void>} - The Promise resolves when the response has been sent.
- *
- * @example
- * router.get('/users', all);
  */
 export async function all(req: Request, res: Response): Promise<void> {
     try {
-        const users = await userAll()
-        res.send({
+        const response = await user.all()
+        res.json({
             errors: false,
-            data: users
+            data: response
         })
     } catch (e) {
         console.error(e)
