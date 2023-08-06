@@ -20,9 +20,3 @@ export const mongo:{connect: () => void} = {
     }
 }
 
-// let schema = {
-//     "_id": ObjectId("..."),
-//     "_userId": << user document link>>
-//     "name": "My First Game",
-//     "outcomes": []
-// }
