@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { create as userCreate } from '../../../user/model/user-repository';
 
 /**
  * Creates a new user in the database.
@@ -13,13 +14,15 @@ import { Request, Response } from 'express';
  * @example
  * router.post('/resource', create);
  */
-export function create(req: Request, res: Response): void {
-    console.log('request body::', req.body)
+export async function create(req: Request, res: Response): Promise<void> {
     try {
+        const user = await userCreate(req.body)
         res.send({
-            success: 'In the Users Create() controller'
+            errors: false,
+            data: user
         })
     } catch (e) {
         console.error(e)
+        res.status(500).send({errors: true, message: "An error occurred while creating the user."});
     }
 }
