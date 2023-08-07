@@ -7,3 +7,5 @@ export const create = async (userData: IUser): Promise<IUserDocument> => await U
 export const all = async (): Promise<IUserDocument[]> => await User.find({})
 
 export const get = async (userId: string): Promise<IUserDocument | null> => await User.findById(userId)
+
+export const findOneBy = async(field: {}): Promise<IUserDocument | null> => await User.findOne(field)

@@ -1,7 +1,7 @@
-import express from 'express'
+import { Router } from 'express'
 import * as GameController from './http/controllers/game-controller'
 
-const router = express.Router()
+const router = Router()
 
 router.post('/game', GameController.create)
 // router.get('/users/:userId/games', UserGameController.get)

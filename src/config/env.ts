@@ -4,6 +4,12 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import express, { Application } from 'express';
 import sessionMiddleware from "../auth/http/middlewares/session.middleware";
+import passport from 'passport'
+import passportLocal from 'passport-local'
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import bcrypt from 'bcryptjs';
+import Passport from './passport';
 
 // const __dirname = dirname(fileURLToPath(import.meta.url));
 
@@ -19,10 +25,12 @@ function setDevEnv(app: Application): void {
     console.log('Setting development environment')
     process.env.NODE_ENV = 'development'
     app.use(express.json())
+    app.use(express.urlencoded({extended: true}));
     app.use(morgan('dev'))
+    
+    Passport(passport)
+    
     app.use(cors())
-    // app.use(express.logger())
-    // app.use(sessionMiddleware)
 }
 
 // function setProdEnv(app: Application): void {

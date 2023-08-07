@@ -14,7 +14,7 @@ import * as game from '../../models/game-repository'
 export function create(req: Request, res: Response): void {
     try {
         const response = game.create(req.body)
-        res.send({
+        res.json({
             success: true,
             data: response
         })

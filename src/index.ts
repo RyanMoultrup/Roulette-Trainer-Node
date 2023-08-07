@@ -4,16 +4,15 @@ import { registerRoutes } from './routes'
 import { setEnvironment } from './config/env'
 import { mongo } from './config/mongo'
 
+dotenv.config()
+
 const init = (): Application => {
     const app = express();
-    dotenv.config()
 
-    const port = process.env.PORT || 3000;
+    mongo.connect()
 
     setEnvironment(app)
     registerRoutes(app)
-
-    mongo.connect()
 
     return app
 }

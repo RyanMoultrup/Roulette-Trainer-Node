@@ -8,4 +8,4 @@ export const all = async (): Promise<IGameDocument[]> => await Game.find({})
 
 export const get = async (gameId: string): Promise<IGameDocument | null> => await Game.findById(gameId)
 
-export const getByUserId = async (userId: string, gameId: string): Promise<IGameDocument[] | []> => await Game.find({ user: userId })
+export const getByUserId = async (userId: string): Promise<IGameDocument[] | []> => await Game.find({ user: userId })
