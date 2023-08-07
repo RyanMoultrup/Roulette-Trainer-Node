@@ -9,13 +9,14 @@ console.log('path::', pathToKey)
 const PRIV_KEY = fs.readFileSync(pathToKey, 'utf8')
 
 /**
- * 
- * @param {*} password - The plain text password
- * @param {*} hash - The hash stored in the database
- * @param {*} salt - The salt stored in the database
- * 
  * This function uses the crypto library to decrypt the hash using the salt and then compares
  * the decrypted hash/salt with the password that the user provided at login
+ * 
+ * @param {string} password - The plain text password to verify.
+ * @param {string} hash - The hash to compare against.
+ * @param {string} salt - The salt used when the hash was created.
+ * 
+ * @returns {boolean} Returns true if the password matches the hash, otherwise false.
  */
 export function validPassword (password: string, hash: string, salt: string): boolean {
     const hashVerify = crypto.pbkdf2Sync(password, salt, 10000, 64, 'sha512').toString('hex')

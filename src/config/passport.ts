@@ -1,18 +1,24 @@
+import fs from 'fs'
+import path from 'path';
 import { PassportStatic } from 'passport'
-import { Strategy as JWTStrategy, ExtractJwt, JwtFromRequestFunction } from 'passport-jwt'
 import { User } from '../user/model/user-model'
 import { IUserDocument } from '../user/interfaces/user-document-interface'
+import { Strategy as JWTStrategy, ExtractJwt, JwtFromRequestFunction } from 'passport-jwt'
+
+const pathToKey = path.join(__dirname, '../..', 'id_rsa_pub.pem');
+console.log('path to key::', pathToKey)
+const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 interface jwtOptions {
-  jwtFromRequest: JwtFromRequestFunction
-  secretOrKey: string
-  algorithms: string[]
+    jwtFromRequest: JwtFromRequestFunction
+    secretOrKey: string
+    algorithms: string[]
 }
 
 const options: jwtOptions = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: process.env.SECRET_KEY || 'jvns',
-  algorithms: ['RS256']
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: PUB_KEY,
+    algorithms: ['RS256']
 }
 
 /**
@@ -29,13 +35,11 @@ const options: jwtOptions = {
  * @param {any} [info] - Optional additional information about the authentication process.
  */
 export default (passport: PassportStatic) => {
-  passport.use(new JWTStrategy(options, async (payload, done) => {
-
-    User.findOne({ _id: payload.sub }, (err: any, user: IUserDocument) => {
-      if (err) return done({ error: err }, false)
-      if (user) return done(null, user)
-      return done(null, false)
-    })
-
-  }));
+    passport.use(new JWTStrategy(options, (payload, done) => {
+        User.findOne({ _id: payload.sub })
+            .then((user: IUserDocument | null) => {
+                if (user) return done(null, user)
+                return done(null, false)
+            }).catch(err =>  done({ error: err }, false))
+    }));
 };
