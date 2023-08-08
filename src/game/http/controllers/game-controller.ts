@@ -11,9 +11,9 @@ import * as game from '../../models/game-repository'
  * @param {Response} res - The Express Response object.
  * @returns {void}
  */
-export function create(req: Request, res: Response): void {
+export async function create(req: Request, res: Response): Promise<void> {
     try {
-        const response = game.create(req.body)
+        const response = await game.create(req.body)
         res.json({
             success: true,
             data: response
@@ -37,10 +37,8 @@ export function create(req: Request, res: Response): void {
 export async function get(req: Request, res: Response): Promise<void> {
     try {
         const response = await game.get(req.params.gameId)
-        res.json({
-            errors: false,
-            data: response
-        })
+        if (response) res.json({ errors: false, data: response })
+        else res.status(404).send({errors: false, message: "Game not found."});
     } catch (e) {
         console.error(e)
         res.status(500).send({errors: true, message: "An error occurred while fetching the users."});

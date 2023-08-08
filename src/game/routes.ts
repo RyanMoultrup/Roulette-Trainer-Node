@@ -4,7 +4,8 @@ import * as UserGameController from './http/controllers/user-game-controller'
 
 const router = Router()
 
-router.post('/game', GameController.create)
+router.post('/games', GameController.create)
+router.get('/games/:gameId', GameController.get)
 router.get('/users/:userId/games', UserGameController.all)
 
 export default router

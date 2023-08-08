@@ -37,10 +37,8 @@ export async function create(req: Request, res: Response): Promise<void> {
 export async function get(req: Request, res: Response): Promise<void> {
     try {
         const response = await user.get(req.params.userId)
-        res.json({
-            errors: false,
-            data: response
-        })
+        if (response) res.json({ errors: false, data: response })
+        else res.status(404).send({errors: false, message: "User could not be found"})
     } catch (e) {
         console.error(e)
         res.status(500).send({errors: true, message: "An error occurred while fetching the users."});

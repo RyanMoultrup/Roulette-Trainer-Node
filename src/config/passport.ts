@@ -6,7 +6,6 @@ import { IUserDocument } from '../user/interfaces/user-document-interface'
 import { Strategy as JWTStrategy, ExtractJwt, JwtFromRequestFunction } from 'passport-jwt'
 
 const pathToKey = path.join(__dirname, '../..', 'id_rsa_pub.pem');
-console.log('path to key::', pathToKey)
 const PUB_KEY = fs.readFileSync(pathToKey, 'utf8');
 
 interface jwtOptions {

@@ -1,7 +1,7 @@
-import mongoose from 'mongoose';
-import { create, all, get, getByUserId } from '../../../../../src/game/models/game-repository';
+import { mongo } from '../../../../../src/config/mongo';
 import { Game } from '../../../../../src/game/models/game-model';
 import { IGame, IOutcome } from '../../../../../src/game/interfaces/game-model-interface';
+import { create, all, get, getByUserId } from '../../../../../src/game/models/game-repository';
 
 const getOutcomes = (): IOutcome => {
     return {
@@ -25,18 +25,7 @@ describe('game-repository integration tests', () => {
 
   beforeAll(async () => {
     try {
-        const dbConnect = process.env.MONGO_DB_CONNECTION as string
-
-        const config: {} = {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        }
-
-        await mongoose.connect(dbConnect, config)
-
-        const db = mongoose.connection
-
-        db.on('error', err => console.error(err))
+        mongo.connect()
     } catch (err) {
         console.log('BeforeAll error: ', err)
     }
@@ -44,7 +33,7 @@ describe('game-repository integration tests', () => {
 
   afterAll(async () => {
     await Game.deleteMany({});
-    await mongoose.connection.close();
+    await mongo.close();
   });
 
   afterEach(async () => {

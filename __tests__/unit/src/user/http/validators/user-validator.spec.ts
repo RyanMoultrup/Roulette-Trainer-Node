@@ -12,7 +12,6 @@ describe('UserValidator Middleware', () => {
     let mockNext: NextFunction;
 
     beforeEach(() => {
-        // Reset the mock implementations before each test
         mockRequest = {};
         mockResponse = {
             status: jest.fn().mockReturnThis(),
