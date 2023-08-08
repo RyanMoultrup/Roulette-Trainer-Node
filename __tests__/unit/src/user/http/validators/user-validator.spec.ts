@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { UserValidator } from '../../../../../src/user/http/validators/user-validator';
+import { UserValidator } from '../../../../../../src/user/http/validators/user-validator';
 
 describe('UserValidator Middleware', () => {
     interface MockResponse extends Partial<Response> {

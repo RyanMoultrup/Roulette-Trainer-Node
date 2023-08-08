@@ -15,5 +15,6 @@ export interface IOutcome {
 }
 
 export interface IGame {
+    user: string
     outcomes: IOutcome[]
 }
