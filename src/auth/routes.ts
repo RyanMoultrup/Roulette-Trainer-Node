@@ -1,18 +1,20 @@
-import * as utils from './utils'
+import jwt from './jwt'
+import password from './password'
 import { User } from '../user/model/user-model';
 import { Request, Response, NextFunction, Router } from 'express';
+import { IUserDocument } from 'src/user/interfaces/user-document-interface';
 
 const router = Router()
 
 router.post('/authenticate', (req: Request, res: Response, next: NextFunction): void => {
     User.findOne({ username: req.body.username })
-        .then((user): void | Response => {
+        .then((user: IUserDocument | null): void | Response => {
             if (!user) return res.status(401).json({ success: false, msg: "could not find user" })
             
-            const isValid = utils.validPassword(req.body.password, user.hash, user.salt)
+            const isValid = password.isValid(req.body.password, user.hash, user.salt)
             
             if (isValid) {
-                const tokenObject = utils.issueJWT(user);
+                const tokenObject = jwt.issue(user);
                 res.status(200).json({ success: true, token: tokenObject.token, expiresIn: tokenObject.expires })
             } 
             else res.status(401).json({ success: false, msg: "you entered the wrong password" })
@@ -22,7 +24,7 @@ router.post('/authenticate', (req: Request, res: Response, next: NextFunction): 
 })
 
 router.post('/register', async (req: Request, res: Response, next: NextFunction): Promise<void> => {
-    const saltHash = utils.genPassword(req.body.password);
+    const saltHash = password.generate(req.body.password);
     
     const salt = saltHash.salt;
     const hash = saltHash.hash;

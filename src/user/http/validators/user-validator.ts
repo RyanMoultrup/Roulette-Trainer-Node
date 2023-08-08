@@ -44,7 +44,7 @@ const createUserSchema = Joi.object({
  * }
  */
 function UserValidator (req: Request, res: Response, next: NextFunction) {
-  const { error } = createUserSchema.validate(req.body);
+  const { error } = createUserSchema.validate(req.body, { abortEarly: false });
 
   if (error) {
     const { details } = error;

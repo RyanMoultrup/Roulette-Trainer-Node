@@ -1,17 +1,14 @@
 import mongoose from 'mongoose'
 
-const dbConnect: {local: string} = {
-    local: 'mongodb://mongo:27017/roulette_trainer'
-}
-
 export const mongo:{connect: () => void} = {
     connect (): void {
+        const dbConnect = process.env.MONGO_DB_CONNECTION as string
         const config: {} = {
             useNewUrlParser: true,
             useUnifiedTopology: true
         }
 
-        mongoose.connect(dbConnect.local, config)
+        mongoose.connect(dbConnect, config)
 
         const db = mongoose.connection
 
@@ -19,4 +16,3 @@ export const mongo:{connect: () => void} = {
         db.once('open', () => console.log('Connected to database'))
     }
 }
-

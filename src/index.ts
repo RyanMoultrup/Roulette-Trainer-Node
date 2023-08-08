@@ -4,9 +4,13 @@ import { registerRoutes } from './routes'
 import { setEnvironment } from './config/env'
 import { mongo } from './config/mongo'
 
-dotenv.config()
-
 const init = (): Application => {
+    const result = dotenv.config();
+
+    if (result.error) {
+        throw result.error;
+    }
+
     const app = express();
 
     mongo.connect()
