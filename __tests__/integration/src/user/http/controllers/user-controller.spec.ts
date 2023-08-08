@@ -114,7 +114,4 @@ describe('User Controller Integration Tests', () => {
         expect(response.body.errors).toBe(false)
         expect(Array.isArray(response.body.data)).toBe(true)
     })
-
-    // Continue with other test cases as needed...
-
 });
