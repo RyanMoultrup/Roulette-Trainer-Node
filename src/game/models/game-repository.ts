@@ -1,11 +1,20 @@
 import { Game } from "./game-model"
-import { IGame } from "../interfaces/game-model-interface"
+import { IGame, IOutcome } from "../interfaces/game-model-interface"
 import { IGameDocument } from "../interfaces/game-document-interface"
+import { FindByIdFunction, All } from "src/types/repository.types"
 
-export const create = async (gameData: IGame): Promise<IGameDocument> => await Game.create(gameData)
+const calculateProfit = (outcomes: IOutcome[]): number => outcomes.reduce((r: number, o: IOutcome) => o.wonRound ? r += o.won : r -= o.loss, 0)
 
-export const all = async (): Promise<IGameDocument[]> => await Game.find({})
+export const create = async (gameData: Partial<IGame>): Promise<IGameDocument> => {
+    const outcomes = gameData.outcomes as IOutcome[]
+    const profit = calculateProfit(outcomes)
+    const bets = outcomes.length
+    const won = profit > 0 
+    return await Game.create({ profit, bets, won, ...gameData })
+}
 
-export const get = async (gameId: string): Promise<IGameDocument | null> => await Game.findById(gameId)
+export const all: All<IGameDocument> = async () => await Game.find({})
+
+export const get: FindByIdFunction<IGameDocument> = async gameId => await Game.findById(gameId)
 
 export const getByUserId = async (userId: string): Promise<IGameDocument[] | []> => await Game.find({ user: userId })

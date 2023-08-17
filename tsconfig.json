@@ -114,17 +114,19 @@
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
-    "outDir": "build/dist",
+    "outDir": "./dist",
     "module": "commonjs",
     "target": "es5",
     "lib": ["es6", "dom"],
     "sourceMap": true,
     "allowJs": true,
     "moduleResolution": "node",
-    "rootDir": "src",
+    // "rootDir": "src",
     "noImplicitReturns": true,
     "noImplicitThis": true,
     "noImplicitAny": true,
     "strictNullChecks": true
   },
+  "include": ["src/**/*.ts", "server.ts"],
+  "exclude": ["node_modules", "jest.config.cjs", "__tests__", "testSetup.cjs"]
 }
