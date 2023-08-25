@@ -17,7 +17,7 @@ describe('User Controller Integration Tests', () => {
         await request(app).post('/register').send(userData);
 
         const loginResponse = await request(app).post('/authenticate').send({
-            username: 'TestUser',
+            email: 'testuser@email.com',
             password: 'TestPassword123',
         });
 
@@ -44,7 +44,7 @@ describe('User Controller Integration Tests', () => {
         }
 
         const response = await request(app)
-            .post('/api/users')
+            .post('/api/v1/users')
             .set('Authorization', `Bearer ${jwtToken}`)
             .send(invalidUserData)
 
@@ -66,7 +66,7 @@ describe('User Controller Integration Tests', () => {
         }
 
         const response = await request(app)
-            .post('/api/users')
+            .post('/api/v1/users')
             .set('Authorization', `Bearer ${jwtToken}`)
             .send(invalidUserData)
 
@@ -78,7 +78,7 @@ describe('User Controller Integration Tests', () => {
         const invalidUserId = '64cee965fe8ab708b411dc59'
 
         const response = await request(app)
-            .get(`/api/users/${invalidUserId}`)
+            .get(`/api/v1/users/${invalidUserId}`)
             .set('Authorization', jwtToken)
 
         expect(response.status).toBe(404);
@@ -90,7 +90,7 @@ describe('User Controller Integration Tests', () => {
         const invalidUserId = '123'
 
         const response = await request(app)
-            .get(`/api/users/${invalidUserId}`)
+            .get(`/api/v1/users/${invalidUserId}`)
             .set('Authorization', jwtToken)
 
         expect(response.status).toBe(500);
@@ -108,7 +108,7 @@ describe('User Controller Integration Tests', () => {
 
     it('should fetch all users', async () => {
         const response = await request(app)
-            .get('/api/users');
+            .get('/api/v1/users');
 
         expect(response.status).toBe(200)
         expect(response.body.errors).toBe(false)

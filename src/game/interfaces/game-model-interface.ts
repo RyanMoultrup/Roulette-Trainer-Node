@@ -17,4 +17,13 @@ export interface IOutcome {
 export interface IGame {
     user: string
     outcomes: IOutcome[]
+    maxInside: number
+    minInside: number
+    maxOutside: number
+    minOutside: number
+    profit: number
+    won: boolean
+    rounds: number
+    bets: number
+    startBalance: Number
 }

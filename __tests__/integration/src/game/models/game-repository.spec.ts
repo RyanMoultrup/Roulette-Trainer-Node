@@ -2,6 +2,7 @@ import { mongo } from '../../../../../src/config/mongo';
 import { Game } from '../../../../../src/game/models/game-model';
 import { IGame, IOutcome } from '../../../../../src/game/interfaces/game-model-interface';
 import { create, all, get, getByUserId } from '../../../../../src/game/models/game-repository';
+import { IGameDocument } from '../../../../../src/game/interfaces/game-document-interface';
 
 const getOutcomes = (): IOutcome => {
     return {
@@ -18,7 +19,7 @@ const getOutcomes = (): IOutcome => {
         bank: 150,
         round: 3,
         outcome: 'win'
-      }
+    }
 }
 
 describe('game-repository integration tests', () => {
@@ -33,7 +34,7 @@ describe('game-repository integration tests', () => {
 
   afterAll(async () => {
     await Game.deleteMany({});
-    await mongo.close();
+    mongo.close();
   });
 
   afterEach(async () => {
@@ -45,7 +46,16 @@ describe('game-repository integration tests', () => {
 
     const gameData: IGame = {
         user: '64cfe9dc085fc9b9484818e7',
-        outcomes: [outcomeData]
+        outcomes: [outcomeData],
+        rounds: 2,
+        maxInside: 1000,
+        maxOutside: 2000,
+        minInside: 10,
+        minOutside: 10,
+        profit: 10,
+        bets: 2,
+        won: true,
+        startBalance: 1000
     };
 
     const createdGame = await create(gameData);
@@ -58,11 +68,36 @@ describe('game-repository integration tests', () => {
     const outcomeData1: IOutcome = getOutcomes();
     const outcomeData2: IOutcome = getOutcomes();
 
-    await create({ outcomes: [outcomeData1], user: '64cfe9dc085fc9b9484818e7' });
-    await create({ outcomes: [outcomeData2], user: '64cfe9dc085fc9b9484818e7' });
+    await create({ 
+        outcomes: [outcomeData1], 
+        user: '64cfe9dc085fc9b9484818e7',
+        rounds: 2,
+        maxInside: 1000,
+        maxOutside: 2000,
+        minInside: 10,
+        minOutside: 10,
+        profit: 10,
+        bets: 2,
+        won: true,
+        startBalance: 1000
+    });
 
-    const games = await all();
-    expect(games.length).toEqual(2);
+    await create({
+        outcomes: [outcomeData2], 
+        user: '64cfe9dc085fc9b9484818e7',
+        rounds: 2,
+        maxInside: 1000,
+        maxOutside: 2000,
+        minInside: 10,
+        minOutside: 10,
+        profit: 10,
+        bets: 2,
+        won: true,
+        startBalance: 1000
+    });
+
+    const games = await all()
+    expect(games?.length).toEqual(2);
   });
 
   it('should retrieve a game by id', async () => {
@@ -81,7 +116,19 @@ describe('game-repository integration tests', () => {
         round: 3,
         outcome: 'win'
       };
-    const gameData: IGame = { outcomes: [outcomeData], user: '64cfe9dc085fc9b9484818e7' };
+    const gameData: IGame = {
+        outcomes: [outcomeData],
+        user: '64cfe9dc085fc9b9484818e7',
+        rounds: 2,
+        maxInside: 1000,
+        maxOutside: 2000,
+        minInside: 10,
+        minOutside: 10,
+        profit: 10,
+        bets: 2,
+        won: true,
+        startBalance: 1000
+    };
 
     const createdGame = await create(gameData);
     const retrievedGame = await get(createdGame._id.toString());
@@ -92,8 +139,32 @@ describe('game-repository integration tests', () => {
 
   it('should find games by user id', async () => {
     const outcomeData: IOutcome = getOutcomes();
-    const gameData1: IGame = { outcomes: [outcomeData], user: '64cfe9dc085fc9b9484818e7' };
-    const gameData2: IGame = { outcomes: [outcomeData], user: '64cee965fe8ab708b411dc56' };
+    const gameData1: IGame = {
+        outcomes: [outcomeData],
+        user: '64cfe9dc085fc9b9484818e7',
+        rounds: 2,
+        maxInside: 1000,
+        maxOutside: 2000,
+        minInside: 10,
+        minOutside: 10,
+        profit: 10,
+        bets: 2,
+        won: true,
+        startBalance: 1000
+    };
+    const gameData2: IGame = {
+        outcomes: [outcomeData],
+        user: '64cee965fe8ab708b411dc56',
+        rounds: 2,
+        maxInside: 1000,
+        maxOutside: 2000,
+        minInside: 10,
+        minOutside: 10,
+        profit: 10,
+        bets: 2,
+        won: true,
+        startBalance: 1000
+    };
 
     await create(gameData1);
     await create(gameData2);
