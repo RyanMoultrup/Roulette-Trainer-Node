@@ -33,4 +33,4 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - "mongo_volume:/data/db"
+      - "mongo_volume:/usr/src/data/db"
