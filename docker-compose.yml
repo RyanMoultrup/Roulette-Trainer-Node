@@ -19,6 +19,12 @@ services:
           npm install &&
           npx nodemon --exec ts-node server.ts
       "
+  # app:
+  #   image: roulette-trainer-prod:latest
+  #   depends_on:
+  #     - mongo
+  #   ports:
+  #     - 3000:8080
 
   mongo:
     image: mongo:6
@@ -27,4 +33,4 @@ services:
     ports:
       - 27017:27017
     volumes:
-      - "mongo_volume:/usr/src/data/db"
+      - "mongo_volume:/data/db"

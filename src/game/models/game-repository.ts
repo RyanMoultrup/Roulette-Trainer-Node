@@ -9,7 +9,7 @@ export const create = async (gameData: Partial<IGame>): Promise<IGameDocument> =
     const outcomes = gameData.outcomes as IOutcome[]
     const profit = calculateProfit(outcomes)
     const bets = outcomes.length
-    const won = profit > 0 
+    const won = profit > 0
     return await Game.create({ profit, bets, won, ...gameData })
 }
 

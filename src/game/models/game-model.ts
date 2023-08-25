@@ -11,7 +11,8 @@ const gameSchema: Schema = new Schema({
     profit: { type: Number },
     won: { type: Boolean },
     rounds: { type: Number },
-    bets: { type: Number }
+    bets: { type: Number },
+    startBalance: { type: Number }
 }, { timestamps: true });
 
 export const Game = mongoose.model<IGameDocument>('Game', gameSchema)

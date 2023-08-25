@@ -54,7 +54,8 @@ describe('game-repository integration tests', () => {
         minOutside: 10,
         profit: 10,
         bets: 2,
-        won: true
+        won: true,
+        startBalance: 1000
     };
 
     const createdGame = await create(gameData);
@@ -77,7 +78,8 @@ describe('game-repository integration tests', () => {
         minOutside: 10,
         profit: 10,
         bets: 2,
-        won: true
+        won: true,
+        startBalance: 1000
     });
 
     await create({
@@ -90,7 +92,8 @@ describe('game-repository integration tests', () => {
         minOutside: 10,
         profit: 10,
         bets: 2,
-        won: true
+        won: true,
+        startBalance: 1000
     });
 
     const games = await all()
@@ -123,7 +126,8 @@ describe('game-repository integration tests', () => {
         minOutside: 10,
         profit: 10,
         bets: 2,
-        won: true
+        won: true,
+        startBalance: 1000
     };
 
     const createdGame = await create(gameData);
@@ -145,7 +149,8 @@ describe('game-repository integration tests', () => {
         minOutside: 10,
         profit: 10,
         bets: 2,
-        won: true
+        won: true,
+        startBalance: 1000
     };
     const gameData2: IGame = {
         outcomes: [outcomeData],
@@ -157,7 +162,8 @@ describe('game-repository integration tests', () => {
         minOutside: 10,
         profit: 10,
         bets: 2,
-        won: true
+        won: true,
+        startBalance: 1000
     };
 
     await create(gameData1);

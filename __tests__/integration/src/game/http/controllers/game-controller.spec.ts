@@ -14,10 +14,10 @@ describe('Game Controller Integration Tests', () => {
             email: 'testuser@email.com'
         };
         
-        await request(app).post('/register').send(userData);
+        const response = await request(app).post('/register').send(userData);
 
         const loginResponse = await request(app).post('/authenticate').send({
-            username: 'TestUser',
+            email: 'testuser@email.com',
             password: 'TestPassword123',
         });
 
@@ -53,11 +53,20 @@ describe('Game Controller Integration Tests', () => {
                 bank: 150,
                 round: 3,
                 outcome: 'win'
-              }]
+              }],
+              maxInside: 1000,
+              minInside: 10,
+              maxOutside: 1000,
+              minOutside: 10,
+              profit: 50,
+              won: true,
+              rounds: 1,
+              bets: 1,
+              startBalance: 1000
         }
 
         const response = await request(app)
-            .post('/api/games')
+            .post('/api/v1/games')
             .set('Authorization', jwtToken)
             .send(validGameData)
 
@@ -66,6 +75,15 @@ describe('Game Controller Integration Tests', () => {
 
         expect(response.body.data).toHaveProperty('user')
         expect(response.body.data).toHaveProperty('outcomes')
+        expect(response.body.data).toHaveProperty('maxInside')
+        expect(response.body.data).toHaveProperty('minInside')
+        expect(response.body.data).toHaveProperty('maxOutside')
+        expect(response.body.data).toHaveProperty('minOutside')
+        expect(response.body.data).toHaveProperty('profit')
+        expect(response.body.data).toHaveProperty('won')
+        expect(response.body.data).toHaveProperty('rounds')
+        expect(response.body.data).toHaveProperty('bets')
+        expect(response.body.data).toHaveProperty('startBalance')
     })
 
     it('should fetch a specific game by its ID', async () => {
@@ -85,18 +103,27 @@ describe('Game Controller Integration Tests', () => {
                 bank: 150,
                 round: 3,
                 outcome: 'win'
-              }]
+              }],
+              maxInside: 1000,
+              minInside: 10,
+              maxOutside: 1000,
+              minOutside: 10,
+              profit: 50,
+              won: true,
+              rounds: 1,
+              bets: 1,
+              startBalance: 1000
         }
 
         const creationResponse = await request(app)
-            .post('/api/games')
+            .post('/api/v1/games')
             .set('Authorization', jwtToken)
             .send(validGameData)
         
         const gameId = creationResponse.body.data._id
 
         const fetchResponse = await request(app)
-            .get(`/api/games/${gameId}`)
+            .get(`/api/v1/games/${gameId}`)
             .set('Authorization', jwtToken)
 
         expect(fetchResponse.status).toBe(200)
@@ -110,7 +137,7 @@ describe('Game Controller Integration Tests', () => {
         const gameId = '64cfe9dc085fc9b9484818e3'
 
         const fetchResponse = await request(app)
-            .get(`/api/games/${gameId}`)
+            .get(`/api/v1/games/${gameId}`)
             .set('Authorization', jwtToken)
 
         expect(fetchResponse.status).toBe(404)

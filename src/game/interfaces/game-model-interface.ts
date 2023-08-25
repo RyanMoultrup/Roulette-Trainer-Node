@@ -25,4 +25,5 @@ export interface IGame {
     won: boolean
     rounds: number
     bets: number
+    startBalance: Number
 }
