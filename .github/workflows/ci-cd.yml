@@ -25,6 +25,10 @@ jobs:
         run: |
           pip install awsebcli --upgrade
 
+      - name: Initialize Elastic Beanstalk environment
+        run: |
+          eb init -p docker Roulettetrainerio-env --region us-east-1
+
       - name: Login to Amazon ECR
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v1
