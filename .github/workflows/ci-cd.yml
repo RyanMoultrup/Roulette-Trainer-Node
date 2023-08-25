@@ -37,8 +37,5 @@ jobs:
           tags: ${{ steps.login-ecr.outputs.registry }}/roulettetrainer.io:latest
 
       - name: Deploy to Elastic Beanstalk
-        uses: aws-actions/aws-elastic-beanstalk-deploy@v1
-        with:
-          environment-name: Roulettetrainerio-env
-          application-name: roulettetrainer.io
-          version-label: ${{ github.run_id }}
+        run: |
+          eb deploy Roulettetrainerio-env
